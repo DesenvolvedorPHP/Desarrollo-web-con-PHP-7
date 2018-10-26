@@ -13,7 +13,7 @@ function funcA(bool $x):string
 echo funcA(true);
 
 
-/****************/
+/******* Exemplo com INT  *********/
 
 
 function funcB(int $x):int
