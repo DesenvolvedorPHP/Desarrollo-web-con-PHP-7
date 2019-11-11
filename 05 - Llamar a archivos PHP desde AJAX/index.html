@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+  	<meta name="description" content="Llamar a archivos PHP desde AJAX">
+  	<meta name="keywords" content="HTML5,CSS3,Ajax,PHP">
+  	<meta name="author" content="Fernando Britto">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Llamar a archivos PHP desde AJAX</title>
+	
+	<script>
+		
+		function listaPaises(p){
+			if (p.length==0) {
+				document.getElementById("sugerencias").innerHTML = "";
+				return;
+			}
+
+			var xmlhttp;
+			
+				xmlhttp = new XMLHttpRequest();
+				
+			xmlhttp.onreadystatechange = function(){
+				//console.log(xmlhttp.readyState,xmlhttp.status);
+				if(xmlhttp.readyState==4){
+					if(xmlhttp.status==200){
+						//Vaciamos la información en sugerencias
+						document.getElementById("sugerencias").innerHTML=xmlhttp.responseText;
+					} else {
+						document.getElementById("sugerencias").innerHTML="<p>Error en el proceso de lectura del archivo. Error "+xmlhttp.status;
+					}
+					
+				}
+			}
+			//GET o POST, url, true=>Asincrono false=>Sincrono
+			xmlhttp.open("GET","paises.php?q="+p,true);
+			//Ejecutamos la lectura
+			xmlhttp.send();
+		}
+	</script>
+</head>
+<body>
+	País: <input type="text" name="pais" id="pais" onKeyUp="listaPaises(this.value)"/>
+	<p>Sugerencias: <span id="sugerencias"></span><p>
+</div>
+</body>
+</html>
