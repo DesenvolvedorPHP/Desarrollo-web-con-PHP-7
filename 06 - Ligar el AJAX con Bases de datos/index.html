@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+  	<meta name="description" content="Ligar el AJAX con Bases de datos (PHP+MySQL)">
+  	<meta name="keywords" content="Ajax,PHP,MySQL">
+  	<meta name="author" content="Fernando Britto">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Ligar el AJAX con Bases de datos</title>
+	
+	<script>
+		
+		function buscaAlumnos(p){
+			if (p.length==0) {
+				document.getElementById("alumnos").innerHTML = "";
+				return;
+			}
+
+			var xmlhttp;
+			
+				xmlhttp = new XMLHttpRequest();
+				
+			xmlhttp.onreadystatechange = function(){				
+				if(xmlhttp.readyState==4){
+					if(xmlhttp.status==200){
+						//Vaciamos la información en alumnos
+						document.getElementById("alumnos").innerHTML=xmlhttp.responseText;
+					} else {
+						document.getElementById("alumnos").innerHTML="<p>Error en el proceso de lectura del archivo. Error "+xmlhttp.status;
+					}
+					
+				}
+			}
+			//GET o POST, url, true=>Asincrono false=>Sincrono
+			xmlhttp.open("GET","alumnos.php?q="+p,true);
+			//Ejecutamos la lectura
+			xmlhttp.send();
+		}
+	</script>
+</head>
+<body>
+	<div>
+		<button onclick="buscaAlumnos('A')">A</button>
+		<button onclick="buscaAlumnos('B')">B</button>
+		<button onclick="buscaAlumnos('C')">C</button>
+		<button onclick="buscaAlumnos('D')">D</button>
+		<button onclick="buscaAlumnos('E')">E</button>
+		<button onclick="buscaAlumnos('F')">F</button>
+		<p>Alumnos:<br><span id="alumnos"></span></p>
+	</div>
+</body>
+</html>
