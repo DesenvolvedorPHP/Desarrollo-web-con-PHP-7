@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+  	<meta name="description" content="Leer un archivo XML con AJAX generado desde PHP de una base de datos">
+  	<meta name="keywords" content="AJAX,PHP,MySQL">
+  	<meta name="author" content="Fernando Britto">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Leer un archivo XML con AJAX</title>
+	
+	<script>
+		
+		function buscaAlumnos(p){
+			if (p.length==0) {
+				document.getElementById("alumnos").innerHTML = "";
+				return;
+			}
+
+			var xmlhttp;
+			
+				xmlhttp = new XMLHttpRequest();
+				
+			xmlhttp.onreadystatechange = function(){				
+				if(xmlhttp.readyState==4){
+					if(xmlhttp.status==200){
+						//Vaciamos la información en alumnos
+						procesaArchivo(xmlhttp.responseXML);
+					} else {
+						document.getElementById("alumnos").innerHTML="<p>Error en el proceso de lectura del archivo. Error "+xmlhttp.status;
+					}
+					
+				}
+			}
+			//GET o POST, url, true=>Asincrono false=>Sincrono
+			xmlhttp.open("GET","alumnosXML.php?q="+p,true);
+			//Ejecutamos la lectura
+			xmlhttp.send();
+		}
+		
+		function procesaArchivo(objetoXML){
+			var cadena = "<table border='1'><tr><th>Nombres</th><th>Apellidos</th><th>Promedio</th></tr>";
+			var a = objetoXML.documentElement.getElementsByTagName("alumno");
+			document.getElementById("alumnos").innerHTML = "Alumnos: "+a.length;
+			for (var i=0; i<a.length; i++) {
+				cadena += "<tr>";
+				nom = a[i].getElementsByTagName("nombres");
+				{
+					try{
+						cadena += "<td>"+nom[0].firstChild.nodeValue+"</td>";
+					}
+					catch(err){
+						cadena += "<td></td>";
+					}
+				}
+				ap = a[i].getElementsByTagName("apellidos");
+				{
+					try{
+						cadena += "<td>"+ap[0].firstChild.nodeValue+"</td>";
+					}
+					catch(err){
+						cadena += "<td></td>";
+					}
+				}
+				pro = a[i].getElementsByTagName("promedio");
+				{
+					try{
+						cadena += "<td>"+pro[0].firstChild.nodeValue+"</td>";
+					}
+					catch(err){
+						cadena += "<td></td>";
+					}
+				}
+				cadena += "</tr>";
+			}
+			cadena += "</table>";
+			document.getElementById("salida").innerHTML = cadena;
+		}
+	</script>
+</head>
+<body>
+	<div>
+		<button onclick="buscaAlumnos('A')">A</button>
+		<button onclick="buscaAlumnos('B')">B</button>
+		<button onclick="buscaAlumnos('C')">C</button>
+		<button onclick="buscaAlumnos('D')">D</button>
+		<button onclick="buscaAlumnos('E')">E</button>
+		<button onclick="buscaAlumnos('F')">F</button>
+		<button onclick="buscaAlumnos('G')">G</button>
+		<button onclick="buscaAlumnos('H')">H</button>
+		<button onclick="buscaAlumnos('I')">I</button>
+		<button onclick="buscaAlumnos('J')">J</button>
+		<button onclick="buscaAlumnos('K')">K</button>
+		<button onclick="buscaAlumnos('L')">L</button>
+		<button onclick="buscaAlumnos('M')">M</button>
+		<button onclick="buscaAlumnos('N')">N</button>
+		<button onclick="buscaAlumnos('O')">O</button>
+		<button onclick="buscaAlumnos('P')">P</button>
+		<button onclick="buscaAlumnos('Q')">Q</button>
+		<button onclick="buscaAlumnos('R')">R</button>
+		<button onclick="buscaAlumnos('S')">S</button>
+		<button onclick="buscaAlumnos('T')">T</button>
+		<button onclick="buscaAlumnos('U')">U</button>
+		<button onclick="buscaAlumnos('V')">V</button>
+		<button onclick="buscaAlumnos('X')">X</button>
+		<button onclick="buscaAlumnos('Z')">Z</button>
+		<p>Alumnos:<br><span id="alumnos"></span></p>
+	</div>
+	<div id="salida"></div>
+</body>
+</html>
